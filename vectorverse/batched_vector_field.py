@@ -657,6 +657,11 @@ class BatchedVectorFieldEnv(ABC):
     ...         return torch.stack([lo, hi], dim=0)
     ...
     ...     @property
+    ...     def init_state_box(self):
+    ...         lo = torch.tensor([-1.0]); hi = torch.tensor([1.0])
+    ...         return torch.stack([lo, hi], dim=0)
+    ...
+    ...     @property
     ...     def target_box(self):
     ...         lo = torch.tensor([-1.0]); hi = torch.tensor([1.0])
     ...         return torch.stack([lo, hi], dim=0)
