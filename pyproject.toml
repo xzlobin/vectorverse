@@ -1,0 +1,23 @@
+[project]
+name = "vectorverse"
+version = "0.1.0"
+description = "A modular framework for building and simulating batched vector-field environments in PyTorch."
+authors = [
+    {name = "Danil Zlobin",email = "danil.zlobin@stuba.sk"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11,<3.15"
+dependencies = [
+    "torchdiffeq (>=0.2.5,<0.3.0)",
+    "torch (>=2.9.0,<3.0.0)",
+    "gymnasium (>=1.2.2,<2.0.0)",
+    "numpy (>=2.3.4,<3.0.0)",
+    "matplotlib (>=3.10.7,<4.0.0)",
+    "stable-baselines3 (>=2.7.0,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
