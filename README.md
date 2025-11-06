@@ -141,7 +141,7 @@ model.learn(total_timesteps=1_000_000)
 The included notebook `examples/pendulum.ipynb` shows how to:
 
 - Subclass `BatchedVectorFieldEnv`  
-- Define the pendulum’s ODE ($\dot{x} = f(x, u)$)  
+- Define the pendulum’s ODE  
 - Use a **fixed** target (upright)  
 - Train an RL agent to keep it there
 
