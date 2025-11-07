@@ -1035,6 +1035,22 @@ class BatchedVectorFieldEnv(ABC):
         f = (a * g + b) / denom
         return f.clamp(0.0, 1.0)
 
+    def error_transform(self, error_flat: torch.Tensor) -> torch.Tensor:
+        """
+        Optional error transformation before reward computation.
+        By default, this is the identity function.
+        Override in subclasses if needed.
+
+        Args:
+            error_flat: Tensor (num_envs, num_outputs)
+                Flattened per-env tracking error on masked outputs.
+        
+        Returns:
+            Tensor (num_envs, num_outputs)
+                Transformed error.
+        """
+        return error_flat
+
     def reward_fn(self, 
                   state:      torch.Tensor, 
                   target:     torch.Tensor, 
@@ -1074,10 +1090,10 @@ class BatchedVectorFieldEnv(ABC):
         y_flat_normalized = (y_flat - shift_y) / scale_y
         tgt_flat_normalized = (tgt_flat - shift_y) / scale_y
 
-        err = (y_flat_normalized - tgt_flat_normalized).abs()
-        err = self.remap_mobius_sigmoid(err, r=self.precision_band, k=self.precision_steepness, clamp_input=True)
+        err_flat = self.error_transform(y_flat_normalized - tgt_flat_normalized).abs()
+        err_flat = self.remap_mobius_sigmoid(err_flat, r=self.precision_band, k=self.precision_steepness, clamp_input=True)
 
-        reward = -err.mean(dim=1)
+        reward = -err_flat.mean(dim=1)
 
         shift_u = self._action_box[0].view(1, -1)
         scale_u = (self._action_box[1] - self._action_box[0]).view(1, -1)
